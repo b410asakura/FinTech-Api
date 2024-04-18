@@ -1,15 +1,18 @@
 package com20.fintechapi.dto.authenticationDto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com20.fintechapi.enums.Role;
+import lombok.*;
 
 @Builder
 @Setter
 @Getter
-public class SignUpRequest {
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserResponse {
     private String firstName;
     private String lastName;
     private String email;
     private String password;
+    private Role role;
+
 }

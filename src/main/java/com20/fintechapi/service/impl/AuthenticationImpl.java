@@ -4,18 +4,23 @@ import com20.fintechapi.config.jwtConfig.JwtService;
 import com20.fintechapi.dto.authenticationDto.AuthenticationResponse;
 import com20.fintechapi.dto.authenticationDto.SignInRequest;
 import com20.fintechapi.dto.authenticationDto.SignUpRequest;
+import com20.fintechapi.dto.authenticationDto.UserResponse;
 import com20.fintechapi.entity.User;
 import com20.fintechapi.enums.Role;
 import com20.fintechapi.globalException.AlreadyExistsException;
 import com20.fintechapi.globalException.BadCredentialException;
 import com20.fintechapi.repository.UserRepository;
+import com20.fintechapi.repository.dao.UserDao;
 import com20.fintechapi.service.AuthenticationService;
+import jakarta.annotation.PostConstruct;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -25,6 +30,8 @@ public class AuthenticationImpl implements AuthenticationService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final UserDao userDao;
+
     @Override
     public AuthenticationResponse signUp(SignUpRequest signUpRequest) {
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
@@ -33,7 +40,8 @@ public class AuthenticationImpl implements AuthenticationService {
             );
         }
         User user = User.builder()
-                .username(signUpRequest.getUsername())
+                .firstName(signUpRequest.getFirstName())
+                .lastName(signUpRequest.getLastName())
                 .email(signUpRequest.getEmail())
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
                 .role(Role.USER)
@@ -78,4 +86,23 @@ public class AuthenticationImpl implements AuthenticationService {
                 .build();
     }
 
+    @Override
+    public List<UserResponse> getAllUsers() {
+        return userDao.getAll();
+    }
+
+    @PostConstruct
+    public void initSaveAdmin() {
+        User user = User.builder()
+                .firstName("admin")
+                .lastName("admins lastName")
+                .email("admin@gmail.com")
+                .password(passwordEncoder.encode("admin123"))
+                .role(Role.ADMIN)
+                .build();
+        if (!userRepository.existsByEmail(user.getEmail())) {
+            userRepository.save(user);
+        }
+        log.info("Admin successfully created and saved");
+    }
 }

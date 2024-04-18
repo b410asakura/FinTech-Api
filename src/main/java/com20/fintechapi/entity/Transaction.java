@@ -1,15 +1,19 @@
 package com20.fintechapi.entity;
 
+import com20.fintechapi.enums.Currency;
+import com20.fintechapi.enums.TransactionType;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "transactions")
-@Data
+@Setter
+@Getter
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Transaction {
     @Id
     @GeneratedValue(
@@ -22,5 +26,24 @@ public class Transaction {
             allocationSize = 1
     )
     private Long id;
-    private String context;
+    private Double amount;
+    @Enumerated(EnumType.STRING)
+    private TransactionType transactionType;
+    private ZonedDateTime dateTime;
+    @ManyToOne( cascade = {
+                    CascadeType.MERGE,
+                    CascadeType.DETACH,
+                    CascadeType.REFRESH
+            })
+    private Card sourceCard;
+    @ManyToOne( cascade = {
+            CascadeType.MERGE,
+            CascadeType.DETACH,
+            CascadeType.REFRESH
+    })
+    private Card destinationCard;
+    private int fee;
+    private Double feeAmount;
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 }

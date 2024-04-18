@@ -3,11 +3,14 @@ package com20.fintechapi.api;
 import com20.fintechapi.dto.authenticationDto.AuthenticationResponse;
 import com20.fintechapi.dto.authenticationDto.SignInRequest;
 import com20.fintechapi.dto.authenticationDto.SignUpRequest;
+import com20.fintechapi.dto.authenticationDto.UserResponse;
 import com20.fintechapi.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,9 +26,15 @@ public class AuthenticationApi {
         return authenticationService.signUp(signUpRequest);
     }
 
-    @PostMapping("signIn")
+    @PostMapping("/signIn")
     @Operation(summary = "for sign in click here")
     public AuthenticationResponse signIn(@RequestBody SignInRequest signInRequest) {
         return authenticationService.signIn(signInRequest);
+    }
+
+    @GetMapping("/showAllUser")
+    @Operation(summary = "to show all users")
+    public List<UserResponse> getAllUsers() {
+        return authenticationService.getAllUsers();
     }
 }
