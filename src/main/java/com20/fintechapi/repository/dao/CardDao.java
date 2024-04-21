@@ -11,4 +11,6 @@ public interface CardDao {
     Card getByCardNumber(String cardNumber);
 
     List<CardResponse> getAll();
+
+    List<CardResponse> showAllCards(Long userId);
 }

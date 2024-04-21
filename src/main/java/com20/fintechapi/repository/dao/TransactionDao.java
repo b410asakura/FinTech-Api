@@ -8,5 +8,7 @@ import java.util.List;
 @Repository
 public interface TransactionDao {
 
-    List<TransactionResponse> getAllByUserId(Long userId);
+    List<TransactionResponse> getAll();
+
+    List<TransactionResponse> getAllTransactions();
 }

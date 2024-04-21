@@ -16,4 +16,7 @@ public interface CardService {
 
     SimpleResponse deleteCard(Long id);
 
+    CardResponse getById(Long id);
+
+    List<CardResponse> showAllCards(Long userId);
 }

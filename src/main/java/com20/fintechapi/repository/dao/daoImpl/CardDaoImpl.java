@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.Type;
+import java.sql.Types;
 import java.util.List;
 
 @Repository
@@ -44,5 +46,24 @@ public class CardDaoImpl implements CardDao {
             cardResponse.setUserFullName(rs.getString("full_name"));
             return cardResponse;
         } );
+    }
+
+    @Override
+    public List<CardResponse> showAllCards(Long userId) {
+        String sql = """
+                select c.id, c.card_number, c.balance
+                    from cards c
+                join users u on c.user_id = u.id
+                where u.id = ?
+                """;
+        Object[] args = {userId};
+        int[] argTypes = {Types.INTEGER};
+        return jdbcTemplate.query(sql, args, argTypes, (rs, rowNum) -> {
+            CardResponse cardResponse = new CardResponse();
+            cardResponse.setId(rs.getLong("id"));
+            cardResponse.setCardNumber(rs.getString("card_number"));
+            cardResponse.setBalance(rs.getDouble("balance"));
+            return cardResponse;
+        });
     }
 }

@@ -73,4 +73,23 @@ public class CardServiceImpl implements CardService {
                 .message("card successfully deleted")
                 .build();
     }
+
+    @Override
+    public CardResponse getById(Long id) {
+        Card card = cardRepository.findById(id).orElseThrow(() ->
+                new NotFoundException(String.format("there is no card with id = %s ", id))
+        );
+        return CardResponse.builder()
+                .id(card.getId())
+                .cardNumber(card.getCardNumber())
+                .balance(card.getBalance())
+                .userId(card.getUser().getId())
+                .userFullName(card.getUser().getFirstName() + " " + card.getUser().getLastName())
+                .build();
+    }
+
+    @Override
+    public List<CardResponse> showAllCards(Long userId) {
+        return cardDao.showAllCards(userId);
+    }
 }

@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class TransactionRequest {
     private Double amount;
-    private CardRequest sourceCard;
-    private CardRequest destinationCard;
+    private Long sourceCardId;
+    private Long destinationCardId;
     private Currency currency;
 }

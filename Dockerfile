@@ -2,7 +2,8 @@ FROM maven:3.9.5-amazoncorretto-21 AS build
 COPY . .
 RUN mvn clean package -DskipTests
 
-FROM openjdk:17.0.1-jdk-slim
+#FROM openjdk:17.0.1-jdk-slim
+FROM amazoncorretto:21-al2023-jdk
 COPY --from=build /target/FinTech-Api-0.0.1-SNAPSHOT.jar FinTech-Api.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "FinTech-Api.jar"]

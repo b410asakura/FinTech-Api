@@ -4,8 +4,6 @@ import com20.fintechapi.dto.SimpleResponse;
 import com20.fintechapi.dto.cardDto.BalanceRequest;
 import com20.fintechapi.dto.cardDto.CardRequest;
 import com20.fintechapi.dto.cardDto.CardResponse;
-import com20.fintechapi.entity.Card;
-import com20.fintechapi.globalException.NotFoundException;
 import com20.fintechapi.repository.CardRepository;
 import com20.fintechapi.service.CardService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,24 +30,24 @@ public class CardApi {
     }
 
     @GetMapping("/getCardById")
-    @Operation(summary = "to get card by id (only ADMIN can do)")
+    @Operation(summary = "to get card information by id (only ADMIN can do)")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public CardResponse getById(@RequestParam Long id) {
-        Card card = cardRepository.findById(id).orElseThrow(() ->
-                new NotFoundException(String.format("there is no card with id = %s ", id))
-        );
-        return CardResponse.builder()
-                .id(card.getId())
-                .cardNumber(card.getCardNumber())
-                .balance(card.getBalance())
-                .userId(card.getUser().getId())
-                .userFullName(card.getUser().getFirstName() + " " + card.getUser().getLastName())
-                .build();
+        return cardService.getById(id);
     }
+
+    @GetMapping("/showAllMyCards")
+    @Operation(summary = "to show all one user's cards (ADMIN and USER can do ")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public List<CardResponse> showAllCards(@RequestParam Long userId) {
+        return cardService.showAllCards(userId);
+    }
+
 
     @PostMapping
     @Operation(summary = "to create card (only ADMIN can do)")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
+
     public SimpleResponse createCard(@RequestBody CardRequest cardRequest) {
         return cardService.createCard(cardRequest);
     }

@@ -16,7 +16,7 @@ import java.util.List;
 public class TransactionDaoImpl implements TransactionDao {
     private final JdbcTemplate jdbcTemplate;
     @Override
-    public List<TransactionResponse> getAllByUserId(Long userId) {
+    public List<TransactionResponse> getAll() {
         String sql = """
                 select t.id,
                        t.amount,
@@ -25,7 +25,7 @@ public class TransactionDaoImpl implements TransactionDao {
                        t.fee_amount,
                        t.transaction_type,
                        t.date_time,
-                       source.card_number as sourse_card,
+                       source.card_number as source_card,
                        destination.card_number as destination_card
                 from transactions t
                 join cards source on t.source_card_id = source.id
@@ -46,5 +46,11 @@ public class TransactionDaoImpl implements TransactionDao {
                     .build();
         }));
 
+    }
+
+    @Override
+    public List<TransactionResponse> getAllTransactions() {
+        String sql = "";
+        return null;
     }
 }

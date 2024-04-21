@@ -1,8 +1,10 @@
 package com20.fintechapi.api;
 
 import com20.fintechapi.dto.SimpleResponse;
+import com20.fintechapi.dto.cardDto.CardRequest;
 import com20.fintechapi.dto.transactionDto.TransactionRequest;
 import com20.fintechapi.dto.transactionDto.TransactionResponse;
+import com20.fintechapi.dto.transactionDto.UserTransactionRequest;
 import com20.fintechapi.repository.CardRepository;
 import com20.fintechapi.repository.dao.CardDao;
 import com20.fintechapi.service.TransactionService;
@@ -23,17 +25,17 @@ public class TransactionApi {
     private final TransactionService transactionService;
 
     @PostMapping("/postTransaction")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    @Operation(summary = "to create new transaction (ADMIN and USER can do)")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @Operation(summary = "to create new transaction")
     public SimpleResponse createTransaction(@RequestBody TransactionRequest transactionRequest) {
         return transactionService.createTransaction(transactionRequest);
     }
 
-    @GetMapping("/getAllTransactionsByUserId")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    @Operation(summary = "to get all transaction (ADMIN and USER can do)")
-    public List<TransactionResponse> getAllByUserId(@RequestParam Long userId) {
-        return transactionService.getAllByUserId(userId);
+    @GetMapping("/getAllTransactions")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @Operation(summary = "to get all transaction (ADMIN can do)")
+    public List<TransactionResponse> getAll() {
+        return transactionService.getAll();
     }
 
     @GetMapping("/getTransactionById")
@@ -43,17 +45,12 @@ public class TransactionApi {
         return transactionService.getById(transactionId);
     }
 
-    @PutMapping("/updateTransaction")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @Operation(summary = "to update transaction by id (not working because i think transaction can't be updated")
-    public SimpleResponse updateById(@RequestParam Long transactionId) {
-        return transactionService.updateById(transactionId);
-    }
-
     @DeleteMapping("/deleteTransaction")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @Operation(summary = "to delete transaction by id (only ADMIN can do)")
     public SimpleResponse deleteById(@RequestParam Long transactionId) {
         return transactionService.deleteById(transactionId);
     }
+
+
 }
