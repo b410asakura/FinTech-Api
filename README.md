@@ -68,7 +68,7 @@ FinTech Innovators is a startup dedicated to transforming the finance industry t
 3. Go to application.properties and do some change:
 4. change spring.datasource.url=jdbc:postgresql://localhost:5432/fintech to your own database url
 5. change spring.datasource.username=postgres to your username
-6. change spring.datasource.password=57206700
+6. change spring.datasource.password=57206700 to your password
 7. Run the application
 
 ## Screenshots and Video Demonstration
