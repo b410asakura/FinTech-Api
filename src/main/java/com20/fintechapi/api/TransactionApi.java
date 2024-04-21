@@ -24,21 +24,21 @@ public class TransactionApi {
 
     @PostMapping("/postTransaction")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    @Operation(summary = "to create new transaction")
+    @Operation(summary = "to create new transaction (ADMIN and USER can do)")
     public SimpleResponse createTransaction(@RequestBody TransactionRequest transactionRequest) {
         return transactionService.createTransaction(transactionRequest);
     }
 
     @GetMapping("/getAllTransactionsByUserId")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    @Operation(summary = "to get all transaction")
+    @Operation(summary = "to get all transaction (ADMIN and USER can do)")
     public List<TransactionResponse> getAllByUserId(@RequestParam Long userId) {
         return transactionService.getAllByUserId(userId);
     }
 
     @GetMapping("/getTransactionById")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    @Operation(summary = "to get transaction by id")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @Operation(summary = "to get transaction by id (only ADMIN can do)")
     public TransactionResponse getById(@RequestParam Long transactionId) {
         return transactionService.getById(transactionId);
     }
@@ -52,7 +52,7 @@ public class TransactionApi {
 
     @DeleteMapping("/deleteTransaction")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @Operation(summary = "to delete transaction by id")
+    @Operation(summary = "to delete transaction by id (only ADMIN can do)")
     public SimpleResponse deleteById(@RequestParam Long transactionId) {
         return transactionService.deleteById(transactionId);
     }

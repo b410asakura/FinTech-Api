@@ -94,8 +94,8 @@ public class AuthenticationImpl implements AuthenticationService {
     @PostConstruct
     public void initSaveAdmin() {
         User user = User.builder()
-                .firstName("admin")
-                .lastName("admins lastName")
+                .firstName("Tovarish")
+                .lastName("Stalin")
                 .email("admin@gmail.com")
                 .password(passwordEncoder.encode("admin123"))
                 .role(Role.ADMIN)

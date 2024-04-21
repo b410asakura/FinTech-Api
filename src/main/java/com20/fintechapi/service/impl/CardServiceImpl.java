@@ -59,7 +59,7 @@ public class CardServiceImpl implements CardService {
         cardRepository.save(card);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message("card successfully updated")
+                .message("balance successfully changed")
                 .build();
     }
 
@@ -70,7 +70,7 @@ public class CardServiceImpl implements CardService {
         cardRepository.deleteById(id);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message("card successfully updated")
+                .message("card successfully deleted")
                 .build();
     }
 }

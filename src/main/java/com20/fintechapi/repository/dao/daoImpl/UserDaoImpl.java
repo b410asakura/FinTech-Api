@@ -17,11 +17,12 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<UserResponse> getAll() {
         String sql = """
-                select u.first_name, u.last_name, u.email, u.password, u.role
+                select u.id, u.first_name, u.last_name, u.email, u.password, u.role
                            from users u
                 """;
         return jdbcTemplate.query(sql,( (rs, rowNum) -> {
             UserResponse user = new UserResponse();
+            user.setId(rs.getLong("id"));
             user.setFirstName(rs.getString("first_name"));
             user.setLastName(rs.getString("last_name"));
             user.setEmail(rs.getString("email"));

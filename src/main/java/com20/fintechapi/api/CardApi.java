@@ -25,14 +25,14 @@ public class CardApi {
     private final CardRepository cardRepository;
 
     @GetMapping("/getAllCards")
-    @Operation(summary = "to get all cards")
+    @Operation(summary = "to get all cards (only ADMIN can do)")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public List<CardResponse> getAll() {
         return cardService.getAll();
     }
 
     @GetMapping("/getCardById")
-    @Operation(summary = "to get card by id")
+    @Operation(summary = "to get card by id (only ADMIN can do)")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public CardResponse getById(@RequestParam Long id) {
         Card card = cardRepository.findById(id).orElseThrow(() ->
@@ -48,20 +48,21 @@ public class CardApi {
     }
 
     @PostMapping
-    @Operation(summary = "to create card")
+    @Operation(summary = "to create card (only ADMIN can do)")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public SimpleResponse createCard(@RequestBody CardRequest cardRequest) {
         return cardService.createCard(cardRequest);
     }
 
     @PutMapping
-    @Operation(summary = "to change card balance")
+    @Operation(summary = "to change card balance (ADMIN and USER can do)")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public SimpleResponse changeCardBalance(@RequestBody BalanceRequest balanceRequest, @RequestParam Long id) {
         return cardService.changeBalance(id, balanceRequest);
     }
 
     @DeleteMapping
-    @Operation(summary = "to delete card")
+    @Operation(summary = "to delete card (only ADMIN can do)")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public SimpleResponse deleteCard(@RequestParam Long id) {
         return cardService.deleteCard(id);
